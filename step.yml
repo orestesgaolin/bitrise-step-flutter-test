@@ -13,6 +13,11 @@ project_type_tags:
 is_requires_admin_user: true
 is_always_run: false
 is_skippable: false
+deps:
+  check_only:
+  - name: flutter
+  brew:
+  - name: dart
 
 toolkit:
   go:
