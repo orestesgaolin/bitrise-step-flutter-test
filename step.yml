@@ -16,8 +16,6 @@ is_skippable: false
 deps:
   check_only:
   - name: flutter
-  brew:
-  - name: dart
 
 toolkit:
   go:

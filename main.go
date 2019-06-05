@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/bitrise-io/go-utils/command"
@@ -25,29 +24,29 @@ func failf(msg string, args ...interface{}) {
 	os.Exit(1)
 }
 
-func getArtifact(started time.Time, cfg config, pattern string) (artifact string, err error) {
-	for _, t := range []time.Time{started, time.Time{}} {
+// func getArtifact(started time.Time, cfg config, pattern string) (artifact string, err error) {
+// 	for _, t := range []time.Time{started, time.Time{}} {
 
-		matches, err := filepath.Glob(cfg.ProjectLocation + pattern)
-		if err != nil {
-			return
-		}
-		if len(matches) == 0 {
-			if t == started {
-				log.Warnf("No artifacts found with pattern: %s that has modification time after: %s", pattern, t)
-				log.Warnf("Retrying without modtime check....")
-				fmt.Println()
-				continue
-			}
-			log.Warnf("No artifacts found with pattern: %s without modtime check", pattern)
-			log.Warnf("If you have changed default report export path in your gradle files then you might need to change ReportPathPattern accordingly.")
-		}
-		if len(matches) > 0 {
-			artifact := matches[0]
-		}
-	}
-	return
-}
+// 		matches, err := filepath.Glob(cfg.ProjectLocation + pattern)
+// 		if err != nil {
+// 			return
+// 		}
+// 		if len(matches) == 0 {
+// 			if t == started {
+// 				log.Warnf("No artifacts found with pattern: %s that has modification time after: %s", pattern, t)
+// 				log.Warnf("Retrying without modtime check....")
+// 				fmt.Println()
+// 				continue
+// 			}
+// 			log.Warnf("No artifacts found with pattern: %s without modtime check", pattern)
+// 			log.Warnf("If you have changed default report export path in your gradle files then you might need to change ReportPathPattern accordingly.")
+// 		}
+// 		if len(matches) > 0 {
+// 			artifact := matches[0]
+// 		}
+// 	}
+// 	return
+// }
 
 func main() {
 	var cfg config
@@ -61,14 +60,17 @@ func main() {
 	tapDartCmd := command.New("brew tap dart-lang/dart").
 		SetStdout(os.Stdout).
 		SetStderr(os.Stderr)
+	tapDartCmd.Run()
 
 	installDartCmd := command.New("brew install dart").
 		SetStdout(os.Stdout).
 		SetStderr(os.Stderr)
+	installDartCmd.Run()
 
 	addToPathCmd := command.New("export PATH=\"$PATH\":\"$HOME/.pub-cache/bin\"").
 		SetStdout(os.Stdout).
 		SetStderr(os.Stderr)
+	addToPathCmd.Run()
 
 	additionalParams, err := shellquote.Split(cfg.AdditionalParams)
 
